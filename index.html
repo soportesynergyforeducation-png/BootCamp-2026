@@ -158,31 +158,80 @@
     background: var(--border);
   }
 
-  .timeline { display: flex; flex-direction: column; gap: 2px; }
+  .timeline { display: flex; flex-direction: column; gap: 4px; }
   .tl-item {
     display: grid;
-    grid-template-columns: 100px 1fr auto;
-    align-items: start;
+    grid-template-columns: 48px 100px 1fr auto;
+    align-items: center;
     gap: 16px;
-    padding: 14px 20px;
+    padding: 14px 20px 14px 14px;
     background: var(--card);
     border: 1px solid transparent;
-    border-radius: 6px;
-    transition: all 0.2s;
+    border-radius: 10px;
+    transition: background 0.4s cubic-bezier(0.32,0.72,0,1), border-color 0.4s cubic-bezier(0.32,0.72,0,1), transform 0.3s cubic-bezier(0.32,0.72,0,1), opacity 0.4s ease;
     cursor: default;
+    position: relative;
+    overflow: hidden;
   }
   .tl-item:hover {
     border-color: var(--border);
     background: var(--card2);
-    transform: translateX(4px);
+    transform: translateX(3px);
   }
   .tl-item.pitch {
     border-left: 3px solid var(--gold);
     background: rgba(201,168,76,0.06);
   }
-  .tl-item.break {
-    opacity: 0.5;
+  .tl-item.break { opacity: 0.4; }
+
+  /* ── DONE STATE ── */
+  .tl-item.done-item { background: rgba(76,175,128,0.04); border-color: rgba(76,175,128,0.1) !important; }
+  .tl-item.done-item:hover { transform: none; }
+  .tl-item.done-item .tl-speaker { color: var(--muted); }
+  .tl-item.done-item .tl-speaker::after { content:''; position:absolute; left:0; right:0; top:50%; height:1px; background: rgba(76,175,128,0.35); }
+  .tl-item.done-item .tl-time { color: var(--muted); }
+  .tl-item.done-item .tl-topic { opacity: 0.5; }
+  .tl-speaker { position: relative; }
+
+  /* ── PREMIUM CHECKBOX ── */
+  .tl-check-col { display:flex; align-items:center; justify-content:center; }
+  .tl-check {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.22);
+    background: rgba(201,168,76,0.04);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    padding: 0; outline: none; flex-shrink: 0;
   }
+  .tl-check::after {
+    content: ''; position:absolute; inset:-5px; border-radius:50%;
+    background: radial-gradient(circle, rgba(76,175,128,0.18) 0%, transparent 70%);
+    opacity:0; transition: opacity 0.4s ease; pointer-events:none;
+  }
+  .tl-check:hover { border-color: rgba(201,168,76,0.55); background: rgba(201,168,76,0.09); transform: scale(1.12); }
+  .tl-check:active { transform: scale(0.96); }
+  .tl-check.done { background: rgba(76,175,128,0.13); border-color: rgba(76,175,128,0.55); box-shadow: 0 0 0 1px rgba(76,175,128,0.12), 0 0 18px rgba(76,175,128,0.18); }
+  .tl-check.done::after { opacity:1; }
+  .tl-check svg { width:14px; height:14px; stroke:var(--green); stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0; transform:scale(0.3) rotate(-15deg); transition:all 0.45s cubic-bezier(0.34,1.56,0.64,1); stroke-dasharray:22; stroke-dashoffset:22; }
+  .tl-check.done svg { opacity:1; transform:scale(1) rotate(0deg); stroke-dashoffset:0; transition:opacity 0.45s cubic-bezier(0.34,1.56,0.64,1), transform 0.45s cubic-bezier(0.34,1.56,0.64,1), stroke-dashoffset 0.35s ease 0.08s; }
+
+  /* ── DAY PROGRESS BAR ── */
+  .day-progress {
+    display: flex; align-items: center; gap: 14px;
+    margin: -12px 0 22px 0;
+    padding: 12px 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .progress-track { flex:1; height:3px; background:rgba(201,168,76,0.08); border-radius:99px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--green),rgba(76,175,128,0.5)); border-radius:99px; transition:width 0.7s cubic-bezier(0.32,0.72,0,1); box-shadow:0 0 8px rgba(76,175,128,0.35); width:0%; }
+  .progress-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); white-space:nowrap; letter-spacing:0.5px; }
+  .progress-pct { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--green); letter-spacing:1px; line-height:1; }
+
+  @keyframes ripple-check { to { transform:scale(3); opacity:0; } }
   .tl-time {
     font-family: 'DM Mono', monospace;
     font-size: 13px;
@@ -401,7 +450,7 @@
   @media (max-width: 640px) {
     .hero { padding: 40px 20px 32px; }
     .container { padding: 24px 16px; }
-    .tl-item { grid-template-columns: 80px 1fr; }
+    .tl-item { grid-template-columns: 36px 70px 1fr; }
     .tl-meta { display: none; }
     .cadence-item { grid-template-columns: 1fr; gap: 4px; }
     .cadence-who { text-align: left; }
@@ -1051,6 +1100,74 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+  function buildCompletionChecks() {
+    // Progress bars per day
+    ['dia5','dia6','dia7'].forEach(dayId => {
+      const section = document.getElementById(dayId);
+      if (!section) return;
+      const dayTitle = section.querySelector('.day-title');
+      const prog = document.createElement('div');
+      prog.className = 'day-progress'; prog.id = 'prog-' + dayId;
+      prog.innerHTML = `<span class="progress-pct" id="pct-${dayId}">0%</span><div class="progress-track"><div class="progress-fill" id="fill-${dayId}"></div></div><span class="progress-label" id="lbl-${dayId}">0 / 0 listas</span>`;
+      dayTitle.after(prog);
+    });
+
+    // Inject checkbox col + spacer col to ALL tl-items for grid alignment
+    document.querySelectorAll('.tl-item').forEach(item => {
+      const col = document.createElement('div');
+      col.className = 'tl-check-col';
+
+      if (item.dataset.speaker) {
+        const key = 'bc_' + (item.closest('[id^=dia]')?.id||'') + '_' + (item.dataset.speaker||'') + '_' + (item.querySelector('.tl-time')?.textContent.trim()||'');
+        const btn = document.createElement('button');
+        btn.className = 'tl-check';
+        btn.setAttribute('aria-label','Marcar ponencia como completada');
+        btn.innerHTML = `<svg viewBox="0 0 16 16"><polyline points="3,9 6.5,13 13,4"/></svg>`;
+
+        if (localStorage.getItem(key) === '1') {
+          btn.classList.add('done');
+          item.classList.add('done-item');
+        }
+
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          const isDone = btn.classList.toggle('done');
+          item.classList.toggle('done-item', isDone);
+          localStorage.setItem(key, isDone ? '1' : '0');
+
+          // Ripple
+          const rip = document.createElement('span');
+          rip.style.cssText = 'position:absolute;inset:0;border-radius:50%;background:rgba(76,175,128,0.25);transform:scale(0);animation:ripple-check 0.55s cubic-bezier(0.32,0.72,0,1) forwards;pointer-events:none';
+          btn.appendChild(rip);
+          setTimeout(() => rip.remove(), 600);
+
+          const sec = item.closest('[id^=dia]');
+          if (sec) updateProgress(sec.id);
+        });
+        col.appendChild(btn);
+      }
+
+      item.prepend(col);
+    });
+
+    // Init progress bars
+    ['dia5','dia6','dia7'].forEach(updateProgress);
+  }
+
+  function updateProgress(dayId) {
+    const sec = document.getElementById(dayId);
+    if (!sec) return;
+    const total = sec.querySelectorAll('.tl-item[data-speaker]').length;
+    const done  = sec.querySelectorAll('.tl-item[data-speaker] .tl-check.done').length;
+    const pct   = total > 0 ? Math.round((done/total)*100) : 0;
+    const fill  = document.getElementById('fill-' + dayId);
+    const lbl   = document.getElementById('lbl-'  + dayId);
+    const pctEl = document.getElementById('pct-'  + dayId);
+    if (fill)  fill.style.width = pct + '%';
+    if (lbl)   lbl.textContent  = `${done} / ${total} listas`;
+    if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = pct === 100 ? 'var(--green)' : pct > 0 ? 'var(--gold)' : 'var(--muted)'; }
+  }
+
   function buildCopyButtons() {
     document.querySelectorAll('.tl-item[data-speaker]').forEach(item => {
       const speakerEl = item.querySelector('.tl-speaker');
@@ -1073,7 +1190,7 @@
       speakerEl.after(btn);
     });
   }
-  document.addEventListener('DOMContentLoaded', buildCopyButtons);
+  document.addEventListener('DOMContentLoaded', () => { buildCompletionChecks(); buildCopyButtons(); });
 
   let isAdmin = false;
   function handleAdminFab() {
