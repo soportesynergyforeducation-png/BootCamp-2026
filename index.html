@@ -957,5 +957,21 @@
     event.target.classList.add('active');
   }
 </script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6_B_Agrh4aoG0hMWKtPIIcYRNvLAvbic",
+    authDomain: "bootcamp-b2383.firebaseapp.com",
+    projectId: "bootcamp-b2383",
+    storageBucket: "bootcamp-b2383.firebasestorage.app",
+    messagingSenderId: "704095505992",
+    appId: "1:704095505992:web:83c770872f5685d3de127d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  window.__firebaseApp = app;
+</script>
 </body>
 </html>
