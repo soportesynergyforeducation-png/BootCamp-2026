@@ -410,6 +410,38 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: var(--dark); }
   ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 500; display: none; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 90%; max-width: 460px; }
+  .modal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--gold); letter-spacing: 2px; margin-bottom: 24px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .form-group label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .form-group input, .form-group select { background: var(--dark); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--dark); }
+  .btn-gold { background: var(--gold); color: var(--black); border: none; border-radius: 6px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; width: 100%; transition: background 0.2s; margin-top: 8px; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 6px; padding: 10px 24px; font-size: 14px; cursor: pointer; width: 100%; margin-top: 8px; }
+  .btn-outline:hover { border-color: var(--text); color: var(--text); }
+
+  /* ── REGISTER BUTTON IN HERO ── */
+  .btn-register { background: transparent; border: 1px solid var(--gold); color: var(--gold); border-radius: 6px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 20px; transition: all 0.2s; letter-spacing: 0.5px; }
+  .btn-register:hover { background: var(--gold); color: var(--black); }
+
+  /* ── ADMIN FAB ── */
+  .admin-fab { position: fixed; bottom: 24px; right: 24px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--muted); cursor: pointer; z-index: 400; transition: all 0.2s; }
+  .admin-fab:hover { border-color: var(--gold); color: var(--gold); }
+  .admin-fab.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+
+  /* ── ADMIN CHECKBOX ON SPEAKER CARDS ── */
+  .sp-check { position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; cursor: pointer; accent-color: var(--gold); display: none; }
+  body.admin-mode .sp-check { display: block; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 80px; right: 24px; background: var(--card2); border: 1px solid var(--gold); border-radius: 6px; padding: 10px 16px; font-size: 13px; color: var(--text); z-index: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -424,6 +456,7 @@
     <div class="date-pill">6 JUN — SÁBADO</div>
     <div class="date-pill">7 JUN — DOMINGO</div>
   </div>
+  <button class="btn-register" onclick="openModal('register-modal')">📋 Registrar asistente</button>
 </div>
 
 <!-- MAIN CONTAINER -->
@@ -452,100 +485,100 @@
   <div id="dia5" class="section active">
     <div class="day-title">VIERNES — 5 DE JUNIO</div>
     <div class="timeline">
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">9:00 AM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel + Jorge</div><div class="tl-topic">Reglas del juego · Presentación de Jorge</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="jorge-serratos">
         <div class="tl-time">9:20 AM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">Presentación del bootcamp y objetivo</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="susy-vereecken">
         <div class="tl-time">9:30 AM</div>
         <div class="tl-content"><div class="tl-speaker">Susi Vereecken</div><div class="tl-topic">En el lugar correcto tu valor se multiplica</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="pavo-gomez">
         <div class="tl-time">10:00 AM</div>
         <div class="tl-content"><div class="tl-speaker">Pavo Gómez</div><div class="tl-topic">Productividad</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">10:40 AM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel de León</div><div class="tl-topic">Inteligencia Artificial</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="ricardo-perret">
         <div class="tl-time">11:15 AM</div>
         <div class="tl-content"><div class="tl-speaker">Ricardo Perret</div><div class="tl-topic">Recupera tu poder</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">11:45 AM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel de León</div><div class="tl-topic">Activación y energía</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="jorge-serratos">
         <div class="tl-time">12:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Sinergia Exponencial</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">PITCH</span><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">1:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">Conecta el punto al siguiente speaker</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="daniel-marcos">
         <div class="tl-time">1:40 PM</div>
         <div class="tl-content"><div class="tl-speaker">Daniel Marcos</div><div class="tl-topic">Scaling Up</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Virtual</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Virtual</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="regina-carrot">
         <div class="tl-time">2:10 PM</div>
         <div class="tl-content"><div class="tl-speaker">Regina Carrot</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Digital</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="alfredo-mota">
         <div class="tl-time">2:40 PM</div>
         <div class="tl-content"><div class="tl-speaker">Alfredo Mota</div><div class="tl-topic">IA aplicada a negocios</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="laura-baez">
         <div class="tl-time">3:10 PM</div>
         <div class="tl-content"><div class="tl-speaker">Laura Báez</div><div class="tl-topic">El poder de tu propósito</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
       <div class="tl-item break">
         <div class="tl-time">3:45 PM</div>
         <div class="tl-content"><div class="tl-speaker">Colchón</div><div class="tl-topic">Espacio de colchón</div></div>
         <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="memo-serrano">
         <div class="tl-time">4:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Memo Serrano</div><div class="tl-topic">Cómo reprogramar tu mentalidad financiera para escalar sin límites</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="paola-padilla">
         <div class="tl-time">4:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Paola Padilla</div><div class="tl-topic">Portales</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="jorge-serratos">
         <div class="tl-time">5:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Ecosistemas (clase 1 lanzamiento)</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">PITCH</span><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="alejandro-cardona">
         <div class="tl-time">6:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Alejandro Cardona</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Digital</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">7:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel y Jorge</div><div class="tl-topic">Clausura del día</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
     </div>
   </div>
@@ -554,90 +587,90 @@
   <div id="dia6" class="section">
     <div class="day-title">SÁBADO — 6 DE JUNIO</div>
     <div class="timeline">
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">9:00 AM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel + Jorge</div><div class="tl-topic">Apertura del día</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="jorge-serratos">
         <div class="tl-time">9:20 AM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="claudia-lizaldi">
         <div class="tl-time">9:30 AM</div>
         <div class="tl-content"><div class="tl-speaker">Claudia L.</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Digital</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="fernando-anzures">
         <div class="tl-time">10:00 AM</div>
         <div class="tl-content"><div class="tl-speaker">Fernando Anzures</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="efren-martinez">
         <div class="tl-time">10:30 AM</div>
         <div class="tl-content"><div class="tl-speaker">Efrén Martínez</div><div class="tl-topic">Algo de superar tus miedos</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Digital</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="luis-fallas">
         <div class="tl-time">11:10 AM</div>
         <div class="tl-content"><div class="tl-speaker">Luis Fallas</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="jorge-serratos">
         <div class="tl-time">12:15 PM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Pitch de venta Black</div></div>
         <div class="tl-meta"><span class="badge badge-gold">PITCH</span></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="manuel-de-leon">
         <div class="tl-time">1:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel + Jorge</div><div class="tl-topic">⏱ Timer para la compra</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">URGENCIA</span><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">URGENCIA</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="barbara-de-la-rosa">
         <div class="tl-time">1:40 PM</div>
         <div class="tl-content"><div class="tl-speaker">Barbara de la Rosa</div><div class="tl-topic">—</div></div>
         <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="salvador-alva">
         <div class="tl-time">2:10 PM</div>
         <div class="tl-content"><div class="tl-speaker">Salvador Alva</div><div class="tl-topic">Lo que un líder no debe delegar</div></div>
         <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="cesar-sanchez">
         <div class="tl-time">2:40 PM</div>
         <div class="tl-content"><div class="tl-speaker">César Sánchez</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="chencho-garcia">
         <div class="tl-time">3:15 PM</div>
         <div class="tl-content"><div class="tl-speaker">Chencho García</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">4:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">Entrevista con los Black (en vivo)</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="milena">
         <div class="tl-time">4:20 PM</div>
         <div class="tl-content"><div class="tl-speaker">Milena</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="daniel-garcia">
         <div class="tl-time">5:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Daniel García</div><div class="tl-topic">La sinergia paga bodas</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">5:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">Refuerzo de venta</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="ruben-duque">
         <div class="tl-time">5:45 PM</div>
         <div class="tl-content"><div class="tl-speaker">Rubén Duque</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
     </div>
   </div>
@@ -646,85 +679,85 @@
   <div id="dia7" class="section">
     <div class="day-title">DOMINGO — 7 DE JUNIO</div>
     <div class="timeline">
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="manuel-de-leon">
         <div class="tl-time">9:00 AM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel de León</div><div class="tl-topic">Introducción y recap</div></div>
         <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="jorge-serratos">
         <div class="tl-time">9:20 AM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge → presenta Fer León</div><div class="tl-topic">—</div></div>
         <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="fer-leon">
         <div class="tl-time">9:30 AM</div>
         <div class="tl-content"><div class="tl-speaker">Fer León</div><div class="tl-topic">Comunicación</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Virtual</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Virtual</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="coral-mujaes">
         <div class="tl-time">10:20 AM</div>
         <div class="tl-content"><div class="tl-speaker">Coral Mujaes</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">En línea</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">En línea</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="titto-luzardo">
         <div class="tl-time">11:00 AM</div>
         <div class="tl-content"><div class="tl-speaker">Titto Luzardo</div><div class="tl-topic">—</div></div>
         <div class="tl-meta"></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="jorge-serratos">
         <div class="tl-time">12:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Repitch del Black</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">PITCH</span><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="manuel-de-leon">
         <div class="tl-time">1:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">⏱ Timer para compra</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">URGENCIA</span><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">URGENCIA</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="memo-serrano">
         <div class="tl-time">1:40 PM</div>
         <div class="tl-content"><div class="tl-speaker">Memo Serrano</div><div class="tl-topic">—</div></div>
         <div class="tl-meta"></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="brando-angulo">
         <div class="tl-time">2:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Brando Angulo</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="alejandro-saracho">
         <div class="tl-time">2:40 PM</div>
         <div class="tl-content"><div class="tl-speaker">Alejandro Saracho</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="victor-heras">
         <div class="tl-time">3:15 PM</div>
         <div class="tl-content"><div class="tl-speaker">Víctor Heras</div><div class="tl-topic">Estrategia de contenido</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Digital</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="spencer-hoffman">
         <div class="tl-time">4:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Spencer Hoffman</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
       <div class="tl-item pitch">
         <div class="tl-time">4:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Last Chance</div><div class="tl-topic">⭐ Última oportunidad de compra</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">CIERRE</span><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">CIERRE</span></div>
       </div>
-      <div class="tl-item">
+      <div class="tl-item" data-speaker="ale-tejeda">
         <div class="tl-time">5:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Ale Tejeda</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
       </div>
       <div class="tl-item break">
         <div class="tl-time">5:30 PM</div>
         <div class="tl-content"><div class="tl-speaker">Testimoniales colchón</div><div class="tl-topic">—</div></div>
-        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+        <div class="tl-meta"></div>
       </div>
-      <div class="tl-item pitch">
+      <div class="tl-item pitch" data-speaker="dr-roch">
         <div class="tl-time">6:00 PM</div>
         <div class="tl-content"><div class="tl-speaker">Dr. Roch</div><div class="tl-topic">🔒 Cerrador</div></div>
-        <div class="tl-meta"><span class="badge badge-gold">CIERRE</span><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+        <div class="tl-meta"><span class="badge badge-gold">CIERRE</span><span class="badge badge-blue">Presencial</span></div>
       </div>
     </div>
   </div>
@@ -733,38 +766,38 @@
   <div id="speakers" class="section">
     <div class="day-title">32 SPEAKERS CONFIRMADOS</div>
     <div class="grid-3">
-      <div class="speaker-card"><div class="sp-num">01</div><div class="sp-name">Jorge Serratos</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">02</div><div class="sp-name">Manuel de León</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">03</div><div class="sp-name">Alejandro Cardona</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
-      <div class="speaker-card"><div class="sp-num">04</div><div class="sp-name">César Sánchez</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">05</div><div class="sp-name">Memo Serrano</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">06</div><div class="sp-name">Salvador Alva</div><div class="sp-badges"><span class="badge badge-blue">Presencial · MTY</span></div></div>
-      <div class="speaker-card"><div class="sp-num">07</div><div class="sp-name">Pavo Gómez</div><div class="sp-badges"><span class="badge badge-blue">Presencial · GDL</span></div></div>
-      <div class="speaker-card"><div class="sp-num">08</div><div class="sp-name">Luis Fallas</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">09</div><div class="sp-name">Daniel García</div><div class="sp-badges"><span class="badge badge-blue">Presencial · GDL</span></div></div>
-      <div class="speaker-card"><div class="sp-num">10</div><div class="sp-name">Fer León</div><div class="sp-badges"><span class="badge badge-blue">GDL · Virtual</span></div></div>
-      <div class="speaker-card"><div class="sp-num">11</div><div class="sp-name">Efrén Martínez</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
-      <div class="speaker-card"><div class="sp-num">12</div><div class="sp-name">Regina Carrot</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
-      <div class="speaker-card"><div class="sp-num">13</div><div class="sp-name">Susy Vereecken</div><div class="sp-badges"><span class="badge badge-blue">Presencial · EUA</span></div></div>
-      <div class="speaker-card"><div class="sp-num">14</div><div class="sp-name">Claudia Lizaldi</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
-      <div class="speaker-card"><div class="sp-num">15</div><div class="sp-name">Milena</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">16</div><div class="sp-name">Fernando Anzures</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">17</div><div class="sp-name">Ricardo Perret</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">18</div><div class="sp-name">Dr. Roch</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">19</div><div class="sp-name">Daniel Marcos</div><div class="sp-badges"><span class="badge badge-blue">Virtual</span></div></div>
-      <div class="speaker-card"><div class="sp-num">20</div><div class="sp-name">Alejandro Saracho</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">21</div><div class="sp-name">Brando Angulo</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">22</div><div class="sp-name">Coral Mujaes</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
-      <div class="speaker-card"><div class="sp-num">23</div><div class="sp-name">Titto Luzardo</div><div class="sp-badges"></div></div>
-      <div class="speaker-card"><div class="sp-num">24</div><div class="sp-name">Víctor Heras</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
-      <div class="speaker-card"><div class="sp-num">25</div><div class="sp-name">Barbara de la Rosa</div><div class="sp-badges"><span class="badge badge-blue">MTY</span></div></div>
-      <div class="speaker-card"><div class="sp-num">26</div><div class="sp-name">Rubén Duque</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">27</div><div class="sp-name">Chencho García</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">28</div><div class="sp-name">Laura Báez</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">29</div><div class="sp-name">Ale Tejeda</div><div class="sp-badges"><span class="badge badge-blue">GDL · Presencial</span></div></div>
-      <div class="speaker-card"><div class="sp-num">30</div><div class="sp-name">Paola Padilla</div><div class="sp-badges"></div></div>
-      <div class="speaker-card"><div class="sp-num">31</div><div class="sp-name">Alfredo Mota</div><div class="sp-badges"></div></div>
-      <div class="speaker-card"><div class="sp-num">32</div><div class="sp-name">Spencer Hoffman</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="jorge-serratos"><div class="sp-num">01</div><div class="sp-name">Jorge Serratos</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="manuel-de-leon"><div class="sp-num">02</div><div class="sp-name">Manuel de León</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="alejandro-cardona"><div class="sp-num">03</div><div class="sp-name">Alejandro Cardona</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card" data-id="cesar-sanchez"><div class="sp-num">04</div><div class="sp-name">César Sánchez</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="memo-serrano"><div class="sp-num">05</div><div class="sp-name">Memo Serrano</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="salvador-alva"><div class="sp-num">06</div><div class="sp-name">Salvador Alva</div><div class="sp-badges"><span class="badge badge-blue">Presencial · MTY</span></div></div>
+      <div class="speaker-card" data-id="pavo-gomez"><div class="sp-num">07</div><div class="sp-name">Pavo Gómez</div><div class="sp-badges"><span class="badge badge-blue">Presencial · GDL</span></div></div>
+      <div class="speaker-card" data-id="luis-fallas"><div class="sp-num">08</div><div class="sp-name">Luis Fallas</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="daniel-garcia"><div class="sp-num">09</div><div class="sp-name">Daniel García</div><div class="sp-badges"><span class="badge badge-blue">Presencial · GDL</span></div></div>
+      <div class="speaker-card" data-id="fer-leon"><div class="sp-num">10</div><div class="sp-name">Fer León</div><div class="sp-badges"><span class="badge badge-blue">GDL · Virtual</span></div></div>
+      <div class="speaker-card" data-id="efren-martinez"><div class="sp-num">11</div><div class="sp-name">Efrén Martínez</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card" data-id="regina-carrot"><div class="sp-num">12</div><div class="sp-name">Regina Carrot</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card" data-id="susy-vereecken"><div class="sp-num">13</div><div class="sp-name">Susy Vereecken</div><div class="sp-badges"><span class="badge badge-blue">Presencial · EUA</span></div></div>
+      <div class="speaker-card" data-id="claudia-lizaldi"><div class="sp-num">14</div><div class="sp-name">Claudia Lizaldi</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card" data-id="milena"><div class="sp-num">15</div><div class="sp-name">Milena</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="fernando-anzures"><div class="sp-num">16</div><div class="sp-name">Fernando Anzures</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="ricardo-perret"><div class="sp-num">17</div><div class="sp-name">Ricardo Perret</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="dr-roch"><div class="sp-num">18</div><div class="sp-name">Dr. Roch</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="daniel-marcos"><div class="sp-num">19</div><div class="sp-name">Daniel Marcos</div><div class="sp-badges"><span class="badge badge-blue">Virtual</span></div></div>
+      <div class="speaker-card" data-id="alejandro-saracho"><div class="sp-num">20</div><div class="sp-name">Alejandro Saracho</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="brando-angulo"><div class="sp-num">21</div><div class="sp-name">Brando Angulo</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="coral-mujaes"><div class="sp-num">22</div><div class="sp-name">Coral Mujaes</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card" data-id="titto-luzardo"><div class="sp-num">23</div><div class="sp-name">Titto Luzardo</div><div class="sp-badges"></div></div>
+      <div class="speaker-card" data-id="victor-heras"><div class="sp-num">24</div><div class="sp-name">Víctor Heras</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card" data-id="barbara-de-la-rosa"><div class="sp-num">25</div><div class="sp-name">Barbara de la Rosa</div><div class="sp-badges"><span class="badge badge-blue">MTY</span></div></div>
+      <div class="speaker-card" data-id="ruben-duque"><div class="sp-num">26</div><div class="sp-name">Rubén Duque</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="chencho-garcia"><div class="sp-num">27</div><div class="sp-name">Chencho García</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="laura-baez"><div class="sp-num">28</div><div class="sp-name">Laura Báez</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card" data-id="ale-tejeda"><div class="sp-num">29</div><div class="sp-name">Ale Tejeda</div><div class="sp-badges"><span class="badge badge-blue">GDL · Presencial</span></div></div>
+      <div class="speaker-card" data-id="paola-padilla"><div class="sp-num">30</div><div class="sp-name">Paola Padilla</div><div class="sp-badges"></div></div>
+      <div class="speaker-card" data-id="alfredo-mota"><div class="sp-num">31</div><div class="sp-name">Alfredo Mota</div><div class="sp-badges"></div></div>
+      <div class="speaker-card" data-id="spencer-hoffman"><div class="sp-num">32</div><div class="sp-name">Spencer Hoffman</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
     </div>
     <div style="margin-top: 24px; padding: 16px; background: var(--card); border: 1px dashed var(--border); border-radius: 8px;">
       <div style="font-family:'DM Mono',monospace; font-size:11px; color:var(--gold); letter-spacing:1px; margin-bottom:8px;">⚠ POR CONFIRMAR</div>
@@ -949,6 +982,54 @@
 
 </div>
 
+<!-- REGISTRO MODAL -->
+<div id="register-modal" class="modal-overlay">
+  <div class="modal">
+    <h3>REGISTRAR ASISTENTE</h3>
+    <div class="form-group">
+      <label>Nombre completo *</label>
+      <input type="text" id="reg-name" placeholder="Juan Pérez">
+    </div>
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" id="reg-email" placeholder="juan@email.com">
+    </div>
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="tel" id="reg-phone" placeholder="+52 55 0000 0000">
+    </div>
+    <div class="form-group">
+      <label>Tipo de acceso</label>
+      <select id="reg-type">
+        <option value="General">General</option>
+        <option value="Black">Black</option>
+        <option value="Staff">Staff</option>
+      </select>
+    </div>
+    <button class="btn-gold" onclick="submitRegistration()">Guardar registro</button>
+    <button class="btn-outline" onclick="closeModal('register-modal')">Cancelar</button>
+  </div>
+</div>
+
+<!-- ADMIN PASSWORD MODAL -->
+<div id="admin-modal" class="modal-overlay">
+  <div class="modal">
+    <h3>ACCESO ADMIN</h3>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="admin-pwd" placeholder="••••••••" onkeydown="if(event.key==='Enter') submitAdminPwd()">
+    </div>
+    <button class="btn-gold" onclick="submitAdminPwd()">Entrar</button>
+    <button class="btn-outline" onclick="closeModal('admin-modal')">Cancelar</button>
+  </div>
+</div>
+
+<!-- ADMIN FAB -->
+<button class="admin-fab" id="admin-fab" onclick="handleAdminFab()">⚙ Admin</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
   function switchTab(id) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -956,10 +1037,44 @@
     document.getElementById(id).classList.add('active');
     event.target.classList.add('active');
   }
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+  let isAdmin = false;
+  function handleAdminFab() {
+    if (isAdmin) {
+      isAdmin = false;
+      document.body.classList.remove('admin-mode');
+      document.getElementById('admin-fab').classList.remove('active');
+      document.getElementById('admin-fab').textContent = '⚙ Admin';
+    } else {
+      openModal('admin-modal');
+    }
+  }
+  function submitAdminPwd() {
+    const pwd = document.getElementById('admin-pwd').value;
+    if (pwd === 'black2026') {
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('admin-fab').classList.add('active');
+      document.getElementById('admin-fab').textContent = '✓ Admin ON';
+      closeModal('admin-modal');
+      document.getElementById('admin-pwd').value = '';
+      showToast('Modo admin activado');
+    } else {
+      showToast('Contraseña incorrecta');
+    }
+  }
 </script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+  import { getFirestore, collection, doc, setDoc, onSnapshot, addDoc, serverTimestamp, updateDoc, writeBatch, getDocs } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC6_B_Agrh4aoG0hMWKtPIIcYRNvLAvbic",
@@ -971,7 +1086,107 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  window.__firebaseApp = app;
+  const db = getFirestore(app);
+
+  const SPEAKERS_SEED = [
+    { id: 'jorge-serratos', confirmed: true }, { id: 'manuel-de-leon', confirmed: true },
+    { id: 'alejandro-cardona', confirmed: true }, { id: 'cesar-sanchez', confirmed: true },
+    { id: 'memo-serrano', confirmed: true }, { id: 'salvador-alva', confirmed: false },
+    { id: 'pavo-gomez', confirmed: true }, { id: 'luis-fallas', confirmed: true },
+    { id: 'daniel-garcia', confirmed: true }, { id: 'fer-leon', confirmed: true },
+    { id: 'efren-martinez', confirmed: true }, { id: 'regina-carrot', confirmed: true },
+    { id: 'susy-vereecken', confirmed: true }, { id: 'claudia-lizaldi', confirmed: true },
+    { id: 'milena', confirmed: true }, { id: 'fernando-anzures', confirmed: true },
+    { id: 'ricardo-perret', confirmed: true }, { id: 'dr-roch', confirmed: true },
+    { id: 'daniel-marcos', confirmed: true }, { id: 'alejandro-saracho', confirmed: true },
+    { id: 'brando-angulo', confirmed: true }, { id: 'coral-mujaes', confirmed: true },
+    { id: 'titto-luzardo', confirmed: false }, { id: 'victor-heras', confirmed: true },
+    { id: 'barbara-de-la-rosa', confirmed: false }, { id: 'ruben-duque', confirmed: true },
+    { id: 'chencho-garcia', confirmed: true }, { id: 'laura-baez', confirmed: true },
+    { id: 'ale-tejeda', confirmed: true }, { id: 'paola-padilla', confirmed: true },
+    { id: 'alfredo-mota', confirmed: true }, { id: 'spencer-hoffman', confirmed: true },
+  ];
+
+  async function seedIfEmpty() {
+    const snap = await getDocs(collection(db, 'speakers'));
+    if (snap.empty) {
+      const batch = writeBatch(db);
+      SPEAKERS_SEED.forEach(sp => batch.set(doc(db, 'speakers', sp.id), { confirmed: sp.confirmed }));
+      await batch.commit();
+    }
+  }
+
+  function updateSpeakerUI(id, data) {
+    const confirmed = data.confirmed;
+
+    // Update timeline conf badges
+    document.querySelectorAll(`[data-speaker="${id}"]`).forEach(item => {
+      const meta = item.querySelector('.tl-meta');
+      if (!meta) return;
+      let badge = meta.querySelector('.badge-conf');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'badge badge-conf';
+        meta.prepend(badge);
+      }
+      badge.className = confirmed ? 'badge badge-green badge-conf' : 'badge badge-red badge-conf';
+      badge.textContent = confirmed ? '✓ Conf.' : '✗ Pend.';
+    });
+
+    // Update speaker card
+    const card = document.querySelector(`.speaker-card[data-id="${id}"]`);
+    if (!card) return;
+
+    let confBadge = card.querySelector('.sp-conf');
+    if (!confBadge) {
+      confBadge = document.createElement('span');
+      confBadge.className = 'badge sp-conf';
+      card.querySelector('.sp-badges').appendChild(confBadge);
+    }
+    confBadge.className = confirmed ? 'badge badge-green sp-conf' : 'badge badge-red sp-conf';
+    confBadge.textContent = confirmed ? '✓' : '✗ Pend.';
+
+    let check = card.querySelector('.sp-check');
+    if (!check) {
+      check = document.createElement('input');
+      check.type = 'checkbox';
+      check.className = 'sp-check';
+      check.addEventListener('change', async () => {
+        try {
+          await updateDoc(doc(db, 'speakers', id), { confirmed: check.checked });
+        } catch(e) {
+          showToast('Error al actualizar');
+          check.checked = !check.checked;
+        }
+      });
+      card.appendChild(check);
+    }
+    check.checked = confirmed;
+  }
+
+  onSnapshot(collection(db, 'speakers'), (snapshot) => {
+    snapshot.docs.forEach(d => updateSpeakerUI(d.id, d.data()));
+  });
+
+  window.submitRegistration = async function() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const phone = document.getElementById('reg-phone').value.trim();
+    const type = document.getElementById('reg-type').value;
+    if (!name || !email) { showToast('Nombre y email son requeridos'); return; }
+    try {
+      await addDoc(collection(db, 'attendees'), { name, email, phone, type, timestamp: serverTimestamp() });
+      closeModal('register-modal');
+      showToast('¡Registro guardado! 🎉');
+      document.getElementById('reg-name').value = '';
+      document.getElementById('reg-email').value = '';
+      document.getElementById('reg-phone').value = '';
+    } catch(e) {
+      showToast('Error al guardar. Intenta de nuevo.');
+    }
+  };
+
+  seedIfEmpty();
 </script>
 </body>
 </html>
