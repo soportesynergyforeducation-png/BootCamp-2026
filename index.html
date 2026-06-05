@@ -442,6 +442,11 @@
   /* ── TOAST ── */
   .toast { position: fixed; bottom: 80px; right: 24px; background: var(--card2); border: 1px solid var(--gold); border-radius: 6px; padding: 10px 16px; font-size: 13px; color: var(--text); z-index: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s; pointer-events: none; }
   .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── COPY ANNOUNCEMENT BUTTON ── */
+  .btn-copy-ann { margin-top: 6px; display: inline-flex; align-items: center; gap: 5px; background: transparent; border: 1px solid rgba(201,168,76,0.3); border-radius: 4px; padding: 3px 10px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--gold); cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; }
+  .btn-copy-ann:hover { background: var(--gold-dim); border-color: var(--gold); }
+  .btn-copy-ann.copied { background: rgba(76,175,128,0.15); border-color: var(--green); color: var(--green); }
 </style>
 </head>
 <body>
@@ -1045,6 +1050,28 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+  function buildCopyButtons() {
+    document.querySelectorAll('.tl-item[data-speaker]').forEach(item => {
+      const speakerEl = item.querySelector('.tl-speaker');
+      if (!speakerEl) return;
+      const name = speakerEl.textContent.trim();
+      const btn = document.createElement('button');
+      btn.className = 'btn-copy-ann';
+      btn.innerHTML = '📋 Copiar anuncio';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = `🚨 ¡ATENCIÓN SINERGÉTICOS! 🚨\n\nEstamos por recibir a nuestro siguiente speaker del Bootcamp de Aceleración de Emprendimientos 2026:\n\n🎤 ${name}\n\n🔥 Prepárate para una sesión llena de valor, estrategias y aprendizajes que pueden ayudarte a acelerar tu crecimiento personal y empresarial.\n\n📝 Ten tu libreta lista, mantente presente y aprovecha cada enseñanza al máximo.\n\nLo que estás por escuchar podría convertirse en una de las ideas más importantes de todo este Bootcamp. 🚀🐝`;
+        navigator.clipboard.writeText(text).then(() => {
+          btn.textContent = '✓ Copiado';
+          btn.classList.add('copied');
+          setTimeout(() => { btn.innerHTML = '📋 Copiar anuncio'; btn.classList.remove('copied'); }, 2000);
+        });
+      });
+      speakerEl.after(btn);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', buildCopyButtons);
+
   let isAdmin = false;
   function handleAdminFab() {
     if (isAdmin) {
