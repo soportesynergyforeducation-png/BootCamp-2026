@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bootcamp Sinergético 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --black: #0A0A0A;
+    --dark: #111111;
+    --card: #181818;
+    --card2: #1E1E1E;
+    --border: rgba(201,168,76,0.2);
+    --text: #F0EDE8;
+    --muted: #888;
+    --green: #4CAF80;
+    --red: #E05A5A;
+    --blue: #5A9BE0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 60px 40px 48px;
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a1200 50%, #0A0A0A 100%);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: 'BOOTCAMP';
+    position: absolute;
+    top: -20px; left: -10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 200px;
+    color: rgba(201,168,76,0.04);
+    letter-spacing: -5px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 8vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+  .hero-dates {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .date-pill {
+    background: var(--gold-dim);
+    border: 1px solid var(--border);
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px;
+    margin-bottom: 36px;
+    overflow-x: auto;
+    flex-wrap: wrap;
+  }
+  .tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+  .tab.active {
+    background: var(--gold);
+    color: var(--black);
+    font-weight: 600;
+  }
+
+  /* ── SECTION CONTENT ── */
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── DAY SCHEDULE ── */
+  .day-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .day-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .timeline { display: flex; flex-direction: column; gap: 2px; }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: start;
+    gap: 16px;
+    padding: 14px 20px;
+    background: var(--card);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .tl-item:hover {
+    border-color: var(--border);
+    background: var(--card2);
+    transform: translateX(4px);
+  }
+  .tl-item.pitch {
+    border-left: 3px solid var(--gold);
+    background: rgba(201,168,76,0.06);
+  }
+  .tl-item.break {
+    opacity: 0.5;
+  }
+  .tl-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 500;
+    padding-top: 2px;
+  }
+  .tl-content { }
+  .tl-speaker {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .tl-topic {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .tl-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .badge-green { background: rgba(76,175,128,0.15); color: var(--green); border: 1px solid rgba(76,175,128,0.3); }
+  .badge-red { background: rgba(224,90,90,0.1); color: var(--red); border: 1px solid rgba(224,90,90,0.2); }
+  .badge-blue { background: rgba(90,155,224,0.1); color: var(--blue); border: 1px solid rgba(90,155,224,0.2); }
+  .badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--border); }
+
+  /* ── SPEAKERS GRID ── */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .speaker-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .speaker-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .speaker-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .sp-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .sp-badges { display: flex; flex-wrap: wrap; gap: 4px; }
+  .sp-num {
+    position: absolute;
+    top: 10px; right: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: rgba(201,168,76,0.2);
+  }
+
+  /* ── BLACK ACCESS ── */
+  .black-hero {
+    background: linear-gradient(135deg, var(--card) 0%, #1a1200 100%);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .black-hero h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .black-hero p { color: var(--muted); font-size: 15px; }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .benefit-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .benefit-rank {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .benefit-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .benefit-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    margin-top: auto;
+  }
+
+  /* ── TEAM ── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .team-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 3px solid var(--gold);
+  }
+  .team-area {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .team-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .team-support {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── CADENCIA ── */
+  .cadence-list { display: flex; flex-direction: column; gap: 8px; }
+  .cadence-item {
+    display: grid;
+    grid-template-columns: 180px 1fr auto;
+    gap: 16px;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 20px;
+  }
+  .cadence-when {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .cadence-what { font-size: 14px; color: var(--text); }
+  .cadence-who { font-size: 12px; color: var(--muted); text-align: right; }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero { padding: 40px 20px 32px; }
+    .container { padding: 24px 16px; }
+    .tl-item { grid-template-columns: 80px 1fr; }
+    .tl-meta { display: none; }
+    .cadence-item { grid-template-columns: 1fr; gap: 4px; }
+    .cadence-who { text-align: left; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">⚡ Sinergéticos — Lanzamiento del año</div>
+  <h1>BOOTCAMP<br><span>SINERGÉTICO</span></h1>
+  <p class="hero-sub">Synergy Unlimited 2026 · Pre-venta Black</p>
+  <div class="hero-dates">
+    <div class="date-pill">5 JUN — VIERNES</div>
+    <div class="date-pill">6 JUN — SÁBADO</div>
+    <div class="date-pill">7 JUN — DOMINGO</div>
+  </div>
+</div>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num">32</div><div class="stat-label">Speakers</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Días de evento</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Áreas de operación</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Beneficios Black</div></div>
+    <div class="stat-card"><div class="stat-num">$44K</div><div class="stat-label">Valor Black core (MXN)</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('dia5')">📅 Día 1 — Vie 5</button>
+    <button class="tab" onclick="switchTab('dia6')">📅 Día 2 — Sáb 6</button>
+    <button class="tab" onclick="switchTab('dia7')">📅 Día 3 — Dom 7</button>
+    <button class="tab" onclick="switchTab('speakers')">🎤 Speakers</button>
+    <button class="tab" onclick="switchTab('black')">⭐ Acceso Black</button>
+    <button class="tab" onclick="switchTab('equipo')">👥 Equipo</button>
+  </div>
+
+  <!-- DÍA 5 -->
+  <div id="dia5" class="section active">
+    <div class="day-title">VIERNES — 5 DE JUNIO</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">9:00 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel + Jorge</div><div class="tl-topic">Reglas del juego · Presentación de Jorge</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">9:20 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">Presentación del bootcamp y objetivo</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">9:30 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Susi Vereecken</div><div class="tl-topic">En el lugar correcto tu valor se multiplica</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10:00 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Pavo Gómez</div><div class="tl-topic">Productividad</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10:40 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel de León</div><div class="tl-topic">Inteligencia Artificial</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">11:15 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Ricardo Perret</div><div class="tl-topic">Recupera tu poder</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">11:45 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel de León</div><div class="tl-topic">Activación y energía</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">12:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Sinergia Exponencial</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">1:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">Conecta el punto al siguiente speaker</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">1:40 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Daniel Marcos</div><div class="tl-topic">Scaling Up</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Virtual</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">2:10 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Regina Carrot</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">2:40 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Alfredo Mota</div><div class="tl-topic">IA aplicada a negocios</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">3:10 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Laura Báez</div><div class="tl-topic">El poder de tu propósito</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item break">
+        <div class="tl-time">3:45 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Colchón</div><div class="tl-topic">Espacio de colchón</div></div>
+        <div class="tl-meta"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">4:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Memo Serrano</div><div class="tl-topic">Cómo reprogramar tu mentalidad financiera para escalar sin límites</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">4:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Paola Padilla</div><div class="tl-topic">Portales</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">5:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Ecosistemas (clase 1 lanzamiento)</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">6:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Alejandro Cardona</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">7:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel y Jorge</div><div class="tl-topic">Clausura del día</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 6 -->
+  <div id="dia6" class="section">
+    <div class="day-title">SÁBADO — 6 DE JUNIO</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">9:00 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel + Jorge</div><div class="tl-topic">Apertura del día</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">9:20 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">9:30 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Claudia L.</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10:00 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Fernando Anzures</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10:30 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Efrén Martínez</div><div class="tl-topic">Algo de superar tus miedos</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">11:10 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Luis Fallas</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">12:15 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Pitch de venta Black</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">1:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel + Jorge</div><div class="tl-topic">⏱ Timer para la compra</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">URGENCIA</span><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">1:40 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Barbara de la Rosa</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">2:10 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Salvador Alva</div><div class="tl-topic">Lo que un líder no debe delegar</div></div>
+        <div class="tl-meta"><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">2:40 PM</div>
+        <div class="tl-content"><div class="tl-speaker">César Sánchez</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">3:15 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Chencho García</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">4:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">Entrevista con los Black (en vivo)</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">4:20 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Milena</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">5:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Daniel García</div><div class="tl-topic">La sinergia paga bodas</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">5:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">Refuerzo de venta</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">5:45 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Rubén Duque</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 7 -->
+  <div id="dia7" class="section">
+    <div class="day-title">DOMINGO — 7 DE JUNIO</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">9:00 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel de León</div><div class="tl-topic">Introducción y recap</div></div>
+        <div class="tl-meta"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">9:20 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge → presenta Fer León</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">9:30 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Fer León</div><div class="tl-topic">Comunicación</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Virtual</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10:20 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Coral Mujaes</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">En línea</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">11:00 AM</div>
+        <div class="tl-content"><div class="tl-speaker">Titto Luzardo</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">12:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Jorge Serratos</div><div class="tl-topic">⭐ Repitch del Black</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">PITCH</span><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">1:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Manuel</div><div class="tl-topic">⏱ Timer para compra</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">URGENCIA</span><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">1:40 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Memo Serrano</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">2:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Brando Angulo</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">2:40 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Alejandro Saracho</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">3:15 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Víctor Heras</div><div class="tl-topic">Estrategia de contenido</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Digital</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">4:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Spencer Hoffman</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">4:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Last Chance</div><div class="tl-topic">⭐ Última oportunidad de compra</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">CIERRE</span><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">5:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Ale Tejeda</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+      <div class="tl-item break">
+        <div class="tl-time">5:30 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Testimoniales colchón</div><div class="tl-topic">—</div></div>
+        <div class="tl-meta"><span class="badge badge-green">✓ Conf.</span></div>
+      </div>
+      <div class="tl-item pitch">
+        <div class="tl-time">6:00 PM</div>
+        <div class="tl-content"><div class="tl-speaker">Dr. Roch</div><div class="tl-topic">🔒 Cerrador</div></div>
+        <div class="tl-meta"><span class="badge badge-gold">CIERRE</span><span class="badge badge-green">✓ Conf.</span><span class="badge badge-blue">Presencial</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPEAKERS -->
+  <div id="speakers" class="section">
+    <div class="day-title">32 SPEAKERS CONFIRMADOS</div>
+    <div class="grid-3">
+      <div class="speaker-card"><div class="sp-num">01</div><div class="sp-name">Jorge Serratos</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">02</div><div class="sp-name">Manuel de León</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">03</div><div class="sp-name">Alejandro Cardona</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card"><div class="sp-num">04</div><div class="sp-name">César Sánchez</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">05</div><div class="sp-name">Memo Serrano</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">06</div><div class="sp-name">Salvador Alva</div><div class="sp-badges"><span class="badge badge-blue">Presencial · MTY</span></div></div>
+      <div class="speaker-card"><div class="sp-num">07</div><div class="sp-name">Pavo Gómez</div><div class="sp-badges"><span class="badge badge-blue">Presencial · GDL</span></div></div>
+      <div class="speaker-card"><div class="sp-num">08</div><div class="sp-name">Luis Fallas</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">09</div><div class="sp-name">Daniel García</div><div class="sp-badges"><span class="badge badge-blue">Presencial · GDL</span></div></div>
+      <div class="speaker-card"><div class="sp-num">10</div><div class="sp-name">Fer León</div><div class="sp-badges"><span class="badge badge-blue">GDL · Virtual</span></div></div>
+      <div class="speaker-card"><div class="sp-num">11</div><div class="sp-name">Efrén Martínez</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card"><div class="sp-num">12</div><div class="sp-name">Regina Carrot</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card"><div class="sp-num">13</div><div class="sp-name">Susy Vereecken</div><div class="sp-badges"><span class="badge badge-blue">Presencial · EUA</span></div></div>
+      <div class="speaker-card"><div class="sp-num">14</div><div class="sp-name">Claudia Lizaldi</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card"><div class="sp-num">15</div><div class="sp-name">Milena</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">16</div><div class="sp-name">Fernando Anzures</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">17</div><div class="sp-name">Ricardo Perret</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">18</div><div class="sp-name">Dr. Roch</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">19</div><div class="sp-name">Daniel Marcos</div><div class="sp-badges"><span class="badge badge-blue">Virtual</span></div></div>
+      <div class="speaker-card"><div class="sp-num">20</div><div class="sp-name">Alejandro Saracho</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">21</div><div class="sp-name">Brando Angulo</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">22</div><div class="sp-name">Coral Mujaes</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card"><div class="sp-num">23</div><div class="sp-name">Titto Luzardo</div><div class="sp-badges"></div></div>
+      <div class="speaker-card"><div class="sp-num">24</div><div class="sp-name">Víctor Heras</div><div class="sp-badges"><span class="badge badge-blue">Digital</span></div></div>
+      <div class="speaker-card"><div class="sp-num">25</div><div class="sp-name">Barbara de la Rosa</div><div class="sp-badges"><span class="badge badge-blue">MTY</span></div></div>
+      <div class="speaker-card"><div class="sp-num">26</div><div class="sp-name">Rubén Duque</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">27</div><div class="sp-name">Chencho García</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">28</div><div class="sp-name">Laura Báez</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">29</div><div class="sp-name">Ale Tejeda</div><div class="sp-badges"><span class="badge badge-blue">GDL · Presencial</span></div></div>
+      <div class="speaker-card"><div class="sp-num">30</div><div class="sp-name">Paola Padilla</div><div class="sp-badges"></div></div>
+      <div class="speaker-card"><div class="sp-num">31</div><div class="sp-name">Alfredo Mota</div><div class="sp-badges"></div></div>
+      <div class="speaker-card"><div class="sp-num">32</div><div class="sp-name">Spencer Hoffman</div><div class="sp-badges"><span class="badge badge-blue">Presencial</span></div></div>
+    </div>
+    <div style="margin-top: 24px; padding: 16px; background: var(--card); border: 1px dashed var(--border); border-radius: 8px;">
+      <div style="font-family:'DM Mono',monospace; font-size:11px; color:var(--gold); letter-spacing:1px; margin-bottom:8px;">⚠ POR CONFIRMAR</div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <span class="badge badge-red">Claudia Barajas</span>
+        <span class="badge badge-red">Alejandro Kasuga</span>
+        <span class="badge badge-red">Spencer Hoffman</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLACK ACCESS -->
+  <div id="black" class="section">
+    <div class="black-hero">
+      <h2>ACCESO BLACK</h2>
+      <p>Synergy Unlimited 2026 · Zona MAS Exclusiva</p>
+    </div>
+    <p style="font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--gold); margin-bottom:16px;">BENEFICIOS CORE</p>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-rank">Core 01</div>
+        <div class="benefit-title">Acceso a Synergy Unlimited en zona MAS exclusiva — 3 días del evento</div>
+        <div class="benefit-value">$36,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Core 02</div>
+        <div class="benefit-title">Comida los 3 días a 3 tiempos · Convivencia con speakers</div>
+        <div class="benefit-value">$15,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Core 03</div>
+        <div class="benefit-title">Acceso a fiesta de bienvenida · Noche de casino</div>
+        <div class="benefit-value">$9,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Core 04</div>
+        <div class="benefit-title">Acceso preferencial a firma de libros — WAS Editorial</div>
+        <div class="benefit-value">$8,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Core 05</div>
+        <div class="benefit-title">Espacio para fotos con conferencistas</div>
+        <div class="benefit-value">$7,000 MXN</div>
+      </div>
+    </div>
+
+    <p style="font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--gold); margin-bottom:16px; margin-top:32px;">BENEFICIOS SECUNDARIOS</p>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-rank">Secundario 01</div>
+        <div class="benefit-title">Grabación del Bootcamp de aceleración de emprendimiento</div>
+        <div class="benefit-value">$8,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Secundario 02</div>
+        <div class="benefit-title">Kit de bienvenida con merch exclusiva zona Black</div>
+        <div class="benefit-value">$8,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Secundario 03</div>
+        <div class="benefit-title">Paquete de libros — 3 de Jorge Serratos + 4 de conferencistas a elección</div>
+        <div class="benefit-value">$5,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Secundario 04</div>
+        <div class="benefit-title">Acceso preferencial a los 3 shows</div>
+        <div class="benefit-value">$4,000 MXN</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-rank">Secundario 05</div>
+        <div class="benefit-title">Zona de snacks exclusiva zona Black</div>
+        <div class="benefit-value">$3,500 MXN</div>
+      </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent); border: 1px solid var(--gold); border-radius: 8px; padding: 20px; margin-top: 24px;">
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:28px; color: var(--gold); letter-spacing:2px;">BONO SÁBADO — ACCIÓN RÁPIDA</div>
+      <div style="font-size:14px; color: var(--text); margin-top:8px;">🎬 Acceso exclusivo al pre-lanzamiento del Documental Synergy Unlimited</div>
+    </div>
+  </div>
+
+  <!-- EQUIPO -->
+  <div id="equipo" class="section">
+    <div class="day-title">LÍDERES DE ÁREA</div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-area">Contenido &amp; Presentaciones</div>
+        <div class="team-name">Manuel</div>
+        <div class="team-support">Owner principal</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Speakers</div>
+        <div class="team-name">Paola</div>
+        <div class="team-support">Apoyo: Manuel y Jorge</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Producción &amp; Tech</div>
+        <div class="team-name">Santiago</div>
+        <div class="team-support">Apoyo: David</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Producto Black &amp; Ventas</div>
+        <div class="team-name">Pablo</div>
+        <div class="team-support">Apoyo: Manuel</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Marketing &amp; Tráfico</div>
+        <div class="team-name">Saul</div>
+        <div class="team-support">Supervisión: Manuel</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Email / WhatsApp / Voz</div>
+        <div class="team-name">David</div>
+        <div class="team-support">Apoyo: Pablo</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Métricas &amp; Dashboard</div>
+        <div class="team-name">David</div>
+        <div class="team-support">Owner principal</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Comunidades</div>
+        <div class="team-name">Daniel y Deborah</div>
+        <div class="team-support">Co-owners</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Branding &amp; Creativos</div>
+        <div class="team-name">Geo</div>
+        <div class="team-support">Owner principal</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Comunicación &amp; Redes</div>
+        <div class="team-name">Geo y Jenn</div>
+        <div class="team-support">Co-owners</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Experiencia Presencial MAS</div>
+        <div class="team-name">Enrique Estrada</div>
+        <div class="team-support">Owner principal</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Cobranza &amp; Cierre</div>
+        <div class="team-name">Aimi y Pablo</div>
+        <div class="team-support">Co-owners</div>
+      </div>
+      <div class="team-card">
+        <div class="team-area">Soporte al Cliente</div>
+        <div class="team-name">Deborah</div>
+        <div class="team-support">Owner principal</div>
+      </div>
+    </div>
+
+    <div class="day-title" style="margin-top:40px;">CADENCIA DE SEGUIMIENTO</div>
+    <div class="cadence-list">
+      <div class="cadence-item">
+        <div class="cadence-when">Diario — 9 PM</div>
+        <div class="cadence-what">Cada owner actualiza estado de sus tareas</div>
+        <div class="cadence-who">Todo el equipo</div>
+      </div>
+      <div class="cadence-item">
+        <div class="cadence-when">Cada 2 días</div>
+        <div class="cadence-what">Reunión de ads y pauta</div>
+        <div class="cadence-who">Manuel, Saul, David</div>
+      </div>
+      <div class="cadence-item">
+        <div class="cadence-when">Lunes y Jue — 10 AM</div>
+        <div class="cadence-what">Stand-up 20 min sobre P0 atrasadas</div>
+        <div class="cadence-who">Líderes de área</div>
+      </div>
+      <div class="cadence-item">
+        <div class="cadence-when" style="color:var(--red)">4–7 Junio</div>
+        <div class="cadence-what">🔴 War room virtual + presencial activo todo el día</div>
+        <div class="cadence-who">Todo el equipo</div>
+      </div>
+      <div class="cadence-item">
+        <div class="cadence-when">12 Junio</div>
+        <div class="cadence-what">Junta retro post-lanzamiento</div>
+        <div class="cadence-who">Todo el equipo</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
