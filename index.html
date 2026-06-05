@@ -1054,7 +1054,8 @@
     document.querySelectorAll('.tl-item[data-speaker]').forEach(item => {
       const speakerEl = item.querySelector('.tl-speaker');
       if (!speakerEl) return;
-      const name = speakerEl.textContent.trim();
+      let name = speakerEl.textContent.trim();
+      if (/^Jorge(\s→.*)?$/.test(name)) name = 'Jorge Serratos';
       const btn = document.createElement('button');
       btn.className = 'btn-copy-ann';
       btn.innerHTML = '📋 Copiar anuncio';
