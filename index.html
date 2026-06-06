@@ -82,19 +82,155 @@
   }
   .hero-dates {
     display: flex;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 14px;
+    margin-top: 32px;
     flex-wrap: wrap;
+    align-items: flex-start;
   }
-  .date-pill {
-    background: var(--gold-dim);
-    border: 1px solid var(--border);
-    padding: 8px 18px;
-    border-radius: 4px;
+
+  /* ── DAY NAV BUTTONS (Double-Bezel Premium) ── */
+  .day-nav-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    text-align: left;
+
+    /* Outer shell */
+    background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 100%);
+    border: 1px solid rgba(201,168,76,0.22);
+    border-radius: 16px;
+    padding: 3px;
+
+    transform: translateY(0) scale(1);
+    transition: transform 700ms cubic-bezier(0.34,1.56,0.64,1),
+                border-color 400ms cubic-bezier(0.32,0.72,0,1),
+                background 400ms cubic-bezier(0.32,0.72,0,1);
+    will-change: transform;
+  }
+  .day-nav-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(201,168,76,0.55);
+    background: linear-gradient(135deg, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0.06) 100%);
+  }
+  .day-nav-btn:active {
+    transform: translateY(0px) scale(0.98);
+    transition: transform 180ms cubic-bezier(0.32,0.72,0,1);
+  }
+  .day-nav-btn.active-day {
+    border-color: rgba(201,168,76,0.7);
+    background: linear-gradient(135deg, rgba(201,168,76,0.18) 0%, rgba(201,168,76,0.08) 100%);
+  }
+  .day-nav-btn.active-day .dnb-inner {
+    background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, rgba(20,14,0,0.9) 100%);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.12), 0 0 20px rgba(201,168,76,0.12);
+  }
+  .day-nav-btn.active-day .dnb-num {
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(201,168,76,0.5);
+  }
+
+  /* Inner core (double-bezel) */
+  .dnb-inner {
+    background: linear-gradient(135deg, rgba(20,14,0,0.85) 0%, rgba(10,10,10,0.95) 100%);
+    border-radius: 13px;
+    padding: 14px 20px 16px;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.07);
+    transition: background 400ms cubic-bezier(0.32,0.72,0,1),
+                box-shadow 400ms cubic-bezier(0.32,0.72,0,1);
+    min-width: 148px;
+  }
+  .day-nav-btn:hover .dnb-inner {
+    background: linear-gradient(135deg, rgba(30,20,0,0.9) 0%, rgba(15,12,0,0.95) 100%);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 0 28px rgba(201,168,76,0.1);
+  }
+
+  .dnb-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.55);
+    margin-bottom: 2px;
+    transition: color 400ms cubic-bezier(0.32,0.72,0,1);
+  }
+  .day-nav-btn:hover .dnb-eyebrow,
+  .day-nav-btn.active-day .dnb-eyebrow {
+    color: rgba(201,168,76,0.85);
+  }
+
+  .dnb-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .dnb-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 2px;
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: 1px;
     color: var(--gold-light);
+    transition: color 400ms cubic-bezier(0.32,0.72,0,1),
+                text-shadow 400ms cubic-bezier(0.32,0.72,0,1);
+  }
+  .day-nav-btn:hover .dnb-num {
+    color: var(--gold);
+    text-shadow: 0 0 16px rgba(201,168,76,0.4);
+  }
+  .dnb-month {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: rgba(201,168,76,0.55);
+    line-height: 1;
+  }
+  .dnb-weekday {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(240,237,232,0.45);
+    margin-top: 5px;
+    text-transform: uppercase;
+    transition: color 400ms cubic-bezier(0.32,0.72,0,1);
+  }
+  .day-nav-btn:hover .dnb-weekday,
+  .day-nav-btn.active-day .dnb-weekday {
+    color: rgba(240,237,232,0.7);
+  }
+
+  /* Active indicator dot */
+  .dnb-dot {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(201,168,76,0.8);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 350ms cubic-bezier(0.34,1.56,0.64,1),
+                transform 350ms cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .day-nav-btn.active-day .dnb-dot {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 640px) {
+    .hero-dates { gap: 10px; }
+    .dnb-inner { min-width: 110px; padding: 11px 15px 13px; }
+    .dnb-num { font-size: 28px; }
+    .dnb-month { font-size: 15px; }
+    .dnb-eyebrow { font-size: 8px; }
   }
 
   /* ── LAYOUT ── */
@@ -506,10 +642,40 @@
   <div class="hero-badge">⚡ Sinergéticos — Lanzamiento del año</div>
   <h1>BOOTCAMP<br><span>SINERGÉTICO</span></h1>
   <p class="hero-sub">Synergy Unlimited 2026 · Pre-venta Black</p>
-  <div class="hero-dates">
-    <div class="date-pill">5 JUN — VIERNES</div>
-    <div class="date-pill">6 JUN — SÁBADO</div>
-    <div class="date-pill">7 JUN — DOMINGO</div>
+  <div class="hero-dates" id="hero-day-nav">
+    <button class="day-nav-btn active-day" onclick="switchTab('dia5'); setActiveDayBtn(this)" aria-label="Día 1 — Viernes 5 de junio">
+      <span class="dnb-dot"></span>
+      <div class="dnb-inner">
+        <div class="dnb-eyebrow">Día 01</div>
+        <div class="dnb-row">
+          <span class="dnb-num">5</span>
+          <span class="dnb-month">JUN</span>
+        </div>
+        <div class="dnb-weekday">Viernes</div>
+      </div>
+    </button>
+    <button class="day-nav-btn" onclick="switchTab('dia6'); setActiveDayBtn(this)" aria-label="Día 2 — Sábado 6 de junio">
+      <span class="dnb-dot"></span>
+      <div class="dnb-inner">
+        <div class="dnb-eyebrow">Día 02</div>
+        <div class="dnb-row">
+          <span class="dnb-num">6</span>
+          <span class="dnb-month">JUN</span>
+        </div>
+        <div class="dnb-weekday">Sábado</div>
+      </div>
+    </button>
+    <button class="day-nav-btn" onclick="switchTab('dia7'); setActiveDayBtn(this)" aria-label="Día 3 — Domingo 7 de junio">
+      <span class="dnb-dot"></span>
+      <div class="dnb-inner">
+        <div class="dnb-eyebrow">Día 03</div>
+        <div class="dnb-row">
+          <span class="dnb-num">7</span>
+          <span class="dnb-month">JUN</span>
+        </div>
+        <div class="dnb-weekday">Domingo</div>
+      </div>
+    </button>
   </div>
   <button class="btn-register" onclick="openModal('register-modal')">📋 Registrar asistente</button>
 </div>
@@ -1090,7 +1256,18 @@
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+    if (event && event.target && event.target.classList.contains('tab')) {
+      event.target.classList.add('active');
+    }
+    // Sync tab bar active state
+    const tabMap = { dia5: 0, dia6: 1, dia7: 2 };
+    if (tabMap[id] !== undefined) {
+      document.querySelectorAll('.tab')[tabMap[id]]?.classList.add('active');
+    }
+  }
+  function setActiveDayBtn(btn) {
+    document.querySelectorAll('#hero-day-nav .day-nav-btn').forEach(b => b.classList.remove('active-day'));
+    btn.classList.add('active-day');
   }
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
