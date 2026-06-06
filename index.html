@@ -1319,6 +1319,32 @@
     snapshot.docs.forEach(d => updateSpeakerUI(d.id, d.data()));
   });
 
+  // ── MIGRATE LOCALSTORAGE → FIRESTORE (one-time) ──
+  async function migrateLocalStorage() {
+    if (localStorage.getItem('bc_migrated') === '1') return;
+    const batch = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const lsKey = localStorage.key(i);
+      if (!lsKey || !lsKey.startsWith('bc_')) continue;
+      const parts = lsKey.split('_');
+      // old format: bc_dia5_speaker-id_9:20AM
+      const dayId = parts[1];
+      if (!['dia5','dia6','dia7'].includes(dayId)) continue;
+      if (localStorage.getItem(lsKey) !== '1') continue;
+      const rawSpeaker = parts.slice(2, parts.length - 1).join('_');
+      const rawTime = parts[parts.length - 1];
+      const field = rawSpeaker + '__' + rawTime.replace(/[:\s]/g, '_');
+      if (!batch[dayId]) batch[dayId] = {};
+      batch[dayId][field] = true;
+    }
+    for (const [dayId, fields] of Object.entries(batch)) {
+      try {
+        await setDoc(doc(db, 'completions', dayId), fields, { merge: true });
+      } catch(e) {}
+    }
+    localStorage.setItem('bc_migrated', '1');
+  }
+
   // ── REAL-TIME COMPLETION SYNC ──
   window.__saveCompletion = async (dayId, field, isDone) => {
     try {
@@ -1361,6 +1387,7 @@
   };
 
   seedIfEmpty();
+  migrateLocalStorage();
 </script>
 </body>
 </html>
