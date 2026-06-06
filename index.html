@@ -1100,6 +1100,9 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+  // Registry: fieldKey → { btn, item, dayId }
+  window.__tlChecks = {};
+
   function buildCompletionChecks() {
     // Progress bars per day
     ['dia5','dia6','dia7'].forEach(dayId => {
@@ -1112,28 +1115,31 @@
       dayTitle.after(prog);
     });
 
-    // Inject checkbox col + spacer col to ALL tl-items for grid alignment
     document.querySelectorAll('.tl-item').forEach(item => {
       const col = document.createElement('div');
       col.className = 'tl-check-col';
 
       if (item.dataset.speaker) {
-        const key = 'bc_' + (item.closest('[id^=dia]')?.id||'') + '_' + (item.dataset.speaker||'') + '_' + (item.querySelector('.tl-time')?.textContent.trim()||'');
+        const dayId  = item.closest('[id^=dia]')?.id || '';
+        const rawTime = item.querySelector('.tl-time')?.textContent.trim() || '';
+        const field  = item.dataset.speaker + '__' + rawTime.replace(/[:\s]/g,'_');
+
         const btn = document.createElement('button');
         btn.className = 'tl-check';
         btn.setAttribute('aria-label','Marcar ponencia como completada');
         btn.innerHTML = `<svg viewBox="0 0 16 16"><polyline points="3,9 6.5,13 13,4"/></svg>`;
 
-        if (localStorage.getItem(key) === '1') {
-          btn.classList.add('done');
-          item.classList.add('done-item');
-        }
+        // Register for real-time updates
+        window.__tlChecks[dayId + '||' + field] = { btn, item, dayId };
 
         btn.addEventListener('click', e => {
           e.stopPropagation();
-          const isDone = btn.classList.toggle('done');
+          const isDone = !btn.classList.contains('done');
+
+          // Optimistic UI
+          btn.classList.toggle('done', isDone);
           item.classList.toggle('done-item', isDone);
-          localStorage.setItem(key, isDone ? '1' : '0');
+          updateProgress(dayId);
 
           // Ripple
           const rip = document.createElement('span');
@@ -1141,17 +1147,15 @@
           btn.appendChild(rip);
           setTimeout(() => rip.remove(), 600);
 
-          const sec = item.closest('[id^=dia]');
-          if (sec) updateProgress(sec.id);
+          // Save to Firestore (set by Firebase module)
+          if (window.__saveCompletion) window.__saveCompletion(dayId, field, isDone);
         });
+
         col.appendChild(btn);
       }
 
       item.prepend(col);
     });
-
-    // Init progress bars
-    ['dia5','dia6','dia7'].forEach(updateProgress);
   }
 
   function updateProgress(dayId) {
@@ -1313,6 +1317,29 @@
 
   onSnapshot(collection(db, 'speakers'), (snapshot) => {
     snapshot.docs.forEach(d => updateSpeakerUI(d.id, d.data()));
+  });
+
+  // ── REAL-TIME COMPLETION SYNC ──
+  window.__saveCompletion = async (dayId, field, isDone) => {
+    try {
+      await setDoc(doc(db, 'completions', dayId), { [field]: isDone }, { merge: true });
+    } catch(e) {
+      showToast('Error al sincronizar');
+    }
+  };
+
+  ['dia5','dia6','dia7'].forEach(dayId => {
+    onSnapshot(doc(db, 'completions', dayId), (snap) => {
+      const data = snap.data() || {};
+      Object.entries(window.__tlChecks || {}).forEach(([regKey, ref]) => {
+        if (!regKey.startsWith(dayId + '||')) return;
+        const field = regKey.split('||')[1];
+        const isDone = !!data[field];
+        ref.btn.classList.toggle('done', isDone);
+        ref.item.classList.toggle('done-item', isDone);
+      });
+      updateProgress(dayId);
+    });
   });
 
   window.submitRegistration = async function() {
