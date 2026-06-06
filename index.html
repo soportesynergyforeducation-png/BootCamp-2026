@@ -1032,72 +1032,201 @@
 
   <!-- BLACK ACCESS -->
   <div id="black" class="section">
-    <div class="black-hero">
-      <h2>ACCESO BLACK</h2>
-      <p>Synergy Unlimited 2026 · Zona MAS Exclusiva</p>
+
+    <!-- Hero -->
+    <div style="
+      position:relative; overflow:hidden;
+      background: linear-gradient(135deg, #0a0000 0%, #1a0000 40%, #0a0000 100%);
+      border: 1px solid rgba(201,168,76,0.25); border-radius:16px;
+      padding: 48px 32px 36px; margin-bottom:36px; text-align:center;
+    ">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(201,0,0,0.12) 0%, transparent 70%);pointer-events:none;"></div>
+      <div style="
+        display:inline-block; font-family:'DM Mono',monospace; font-size:10px;
+        letter-spacing:4px; text-transform:uppercase; color:var(--gold);
+        border:1px solid rgba(201,168,76,0.4); border-radius:2px;
+        padding:4px 14px; margin-bottom:20px;
+      ">SYNERGY UNLIMITED 2026 · GUADALAJARA, JALISCO</div>
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,9vw,96px); line-height:0.88; letter-spacing:3px; color:#fff; margin-bottom:6px;">SYNERGY</div>
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,9vw,96px); line-height:0.88; letter-spacing:3px; color:var(--gold);">BLACK ACCESS</div>
+      <div style="margin-top:20px; font-size:14px; color:var(--muted); letter-spacing:1px;">NETWORKING · ESTRATEGIA · CRECIMIENTO</div>
+      <div style="margin-top:8px; font-family:'DM Mono',monospace; font-size:13px; color:var(--text); opacity:0.7;">📅 9 · 10 · 11 OCTUBRE 2026 &nbsp;|&nbsp; EXPO GUADALAJARA</div>
     </div>
-    <p style="font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--gold); margin-bottom:16px;">BENEFICIOS CORE</p>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-rank">Core 01</div>
-        <div class="benefit-title">Acceso a Synergy Unlimited en zona MAS exclusiva — 3 días del evento</div>
-        <div class="benefit-value">$36,000 MXN</div>
+
+    <!-- Valor total acumulado -->
+    <div style="
+      background: rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.2);
+      border-radius:12px; padding:20px 24px; margin-bottom:32px;
+      display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    ">
+      <div>
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Valor total del paquete</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:42px; color:var(--gold); letter-spacing:2px; line-height:1;">+$9,489 USD</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:2px;">Todo lo que obtienes incluido en un solo precio</div>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Core 02</div>
-        <div class="benefit-title">Comida los 3 días a 3 tiempos · Convivencia con speakers</div>
-        <div class="benefit-value">$15,000 MXN</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Core 03</div>
-        <div class="benefit-title">Acceso a fiesta de bienvenida · Noche de casino</div>
-        <div class="benefit-value">$9,000 MXN</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Core 04</div>
-        <div class="benefit-title">Acceso preferencial a firma de libros — WAS Editorial</div>
-        <div class="benefit-value">$8,000 MXN</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Core 05</div>
-        <div class="benefit-title">Espacio para fotos con conferencistas</div>
-        <div class="benefit-value">$7,000 MXN</div>
+      <div style="text-align:right;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:4px;">Precio PREVENTA</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:52px; color:#fff; letter-spacing:2px; line-height:1;">$1,997 <span style="font-size:28px; color:var(--gold);">USD</span></div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">Solo 6 y 7 de Junio 2026</div>
       </div>
     </div>
 
-    <p style="font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--gold); margin-bottom:16px; margin-top:32px;">BENEFICIOS SECUNDARIOS</p>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-rank">Secundario 01</div>
-        <div class="benefit-title">Grabación del Bootcamp de aceleración de emprendimiento</div>
-        <div class="benefit-value">$8,000 MXN</div>
+    <!-- Beneficios incluidos -->
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:3px; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">¿Qué obtienes?</div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:12px; margin-bottom:32px;">
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🏟️ <strong>Experiencia Black 3 días</strong> — Zona preferencial en Synergy Unlimited</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$1,997</div>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Secundario 02</div>
-        <div class="benefit-title">Kit de bienvenida con merch exclusiva zona Black</div>
-        <div class="benefit-value">$8,000 MXN</div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🍿 <strong>Estación de Snacks</strong> — Los 3 días del evento</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$299</div>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Secundario 03</div>
-        <div class="benefit-title">Paquete de libros — 3 de Jorge Serratos + 4 de conferencistas a elección</div>
-        <div class="benefit-value">$5,000 MXN</div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🎁 <strong>Kit de Bienvenida BLACK</strong> — Merch exclusiva</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$399</div>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Secundario 04</div>
-        <div class="benefit-title">Acceso preferencial a los 3 shows</div>
-        <div class="benefit-value">$4,000 MXN</div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">📚 <strong>Firma de Libros Privado BLACK</strong> — Sesión exclusiva</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$399</div>
       </div>
-      <div class="benefit-card">
-        <div class="benefit-rank">Secundario 05</div>
-        <div class="benefit-title">Zona de snacks exclusiva zona Black</div>
-        <div class="benefit-value">$3,500 MXN</div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">📸 <strong>Meet & Greet + Fotos</strong> — Con algunos conferencistas</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$399</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🍽️ <strong>Comida con Speakers</strong> — Los 3 días incluida</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$999</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🎬 <strong>Grabación del Bootcamp</strong> — Acceso permanente</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$499</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🤝 <strong>Grupo de High Networking</strong> — Comunidad exclusiva</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$499</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">💬 <strong>Synergy Unlimited Sessions</strong> — Mentoría grupal virtual con Jorge Serratos (Q&A · conexiones · preparación)</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$499</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">⭐ <strong>Acceso Preferencial al Show</strong> — Zona VIP los 3 días</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$499</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🎰 <strong>Fiesta de Gala con Alfombra Roja</strong> — Fiesta de Casino exclusiva</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$799</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🎓 <strong>Mentoría & Q&A Digital</strong> — Privada con Jorge Serratos</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$1,999</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">📖 <strong>Kit de Libros</strong> — De algunos speakers de Synergy Unlimited 2026</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$200</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; transition: border-color 0.3s;" onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🧠 <strong>Entrenamiento Digital "Capital Sinergético"</strong></div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">$1,999</div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.04)); border:1px solid rgba(201,168,76,0.35); border-radius:10px; padding:16px 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+        <div style="font-size:14px; color:var(--text); line-height:1.4; flex:1;">🚗 <strong>5x más oportunidades</strong> — Para ganarte el auto en el sorteo</div>
+        <div style="font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); white-space:nowrap;">BONUS</div>
+      </div>
+
+    </div>
+
+    <!-- Tabla de precios por fase -->
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:3px; color:var(--gold); margin-bottom:16px;">PRECIOS POR FASE</div>
+    <div style="border:1px solid rgba(201,168,76,0.2); border-radius:12px; overflow:hidden; margin-bottom:32px;">
+      <div style="display:grid; grid-template-columns:1fr 1.4fr 1fr; background:rgba(201,168,76,0.08);">
+        <div style="padding:10px 16px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; border-bottom:1px solid rgba(201,168,76,0.15);">FASE</div>
+        <div style="padding:10px 16px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; border-bottom:1px solid rgba(201,168,76,0.15);">FECHA</div>
+        <div style="padding:10px 16px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; border-bottom:1px solid rgba(201,168,76,0.15); text-align:right;">PRECIO</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1.4fr 1fr; background:rgba(201,168,76,0.12); border-bottom:1px solid rgba(201,168,76,0.15);">
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; color:#fff;">PREVENTA</div>
+        <div style="padding:14px 16px; font-size:13px; color:var(--text);">6 y 7 Junio</div>
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--gold); text-align:right;">$1,997 USD</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1.4fr 1fr; border-bottom:1px solid rgba(201,168,76,0.1);">
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; color:var(--muted);">FASE 1</div>
+        <div style="padding:14px 16px; font-size:13px; color:var(--muted);">8 al 30 Junio</div>
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--muted); text-align:right;">$2,297 USD</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1.4fr 1fr; border-bottom:1px solid rgba(201,168,76,0.1);">
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; color:var(--muted);">FASE 2</div>
+        <div style="padding:14px 16px; font-size:13px; color:var(--muted);">1 Julio al 31 Agosto</div>
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--muted); text-align:right;">$2,497 USD</div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1.4fr 1fr;">
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; color:var(--muted);">FASE 3</div>
+        <div style="padding:14px 16px; font-size:13px; color:var(--muted);">1 Sept al 1 Oct</div>
+        <div style="padding:14px 16px; font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--muted); text-align:right;">$3,997 USD</div>
       </div>
     </div>
 
-    <div style="background: linear-gradient(135deg, rgba(201,168,76,0.1), transparent); border: 1px solid var(--gold); border-radius: 8px; padding: 20px; margin-top: 24px;">
-      <div style="font-family:'Bebas Neue',sans-serif; font-size:28px; color: var(--gold); letter-spacing:2px;">BONO SÁBADO — ACCIÓN RÁPIDA</div>
-      <div style="font-size:14px; color: var(--text); margin-top:8px;">🎬 Acceso exclusivo al pre-lanzamiento del Documental Synergy Unlimited</div>
+    <!-- Opciones de pago a plazos -->
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:3px; color:var(--gold); margin-bottom:16px;">OPCIONES DE PAGO</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; margin-bottom:32px;">
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:20px; text-align:center;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">12 PAGOS</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:40px; color:var(--gold); letter-spacing:2px; line-height:1;">$3,583 <span style="font-size:20px;">MXN</span></div>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">Solo TDC mexicanas</div>
+      </div>
+      <div style="background:var(--card); border:1px solid rgba(201,168,76,0.2); border-radius:12px; padding:20px; text-align:center;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">24 PAGOS</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:40px; color:var(--gold); letter-spacing:2px; line-height:1;">$1,791 <span style="font-size:20px;">MXN</span></div>
+        <div style="font-size:11px; color:var(--muted); margin-top:6px;">Solo TDC mexicanas · Sujeto a autorización bancaria</div>
+      </div>
     </div>
+
+    <!-- CTA contacto -->
+    <div style="
+      background: linear-gradient(135deg, #0d0000, #180000);
+      border:1px solid rgba(201,168,76,0.3); border-radius:14px;
+      padding:28px 28px; text-align:center;
+    ">
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:3px; color:#fff; margin-bottom:4px;">¿LISTO PARA EL SIGUIENTE NIVEL?</div>
+      <div style="font-size:14px; color:var(--muted); margin-bottom:20px;">Reserva tu lugar o pregunta por más información</div>
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+        <a href="https://wa.me/5233151987950" target="_blank" style="
+          display:inline-flex; align-items:center; gap:8px;
+          background:var(--gold); color:#000;
+          font-family:'DM Mono',monospace; font-size:13px; font-weight:600;
+          padding:12px 24px; border-radius:6px; text-decoration:none;
+          letter-spacing:1px; transition: opacity 0.2s;
+        " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          💬 WhatsApp +52 33 1519 8795
+        </a>
+        <a href="tel:+523315198795" style="
+          display:inline-flex; align-items:center; gap:8px;
+          background:transparent; color:var(--gold);
+          font-family:'DM Mono',monospace; font-size:13px; font-weight:600;
+          padding:12px 24px; border-radius:6px; text-decoration:none;
+          border:1px solid rgba(201,168,76,0.4); letter-spacing:1px; transition: border-color 0.2s;
+        " onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,168,76,0.4)'">
+          📞 Llamar ahora
+        </a>
+      </div>
+    </div>
+
   </div>
 
   <!-- EQUIPO -->
