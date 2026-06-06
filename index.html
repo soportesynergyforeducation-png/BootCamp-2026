@@ -1321,7 +1321,14 @@
 
   // ── MIGRATE LOCALSTORAGE → FIRESTORE (one-time) ──
   async function migrateLocalStorage() {
-    if (localStorage.getItem('bc_migrated') === '1') return;
+    // Log all bc_ keys for debugging
+    const bcKeys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('bc_')) bcKeys.push(k + ' = ' + localStorage.getItem(k));
+    }
+    console.log('[Migration] localStorage bc_ keys:', bcKeys);
+    if (localStorage.getItem('bc_migrated') === '1') { console.log('[Migration] Already migrated'); return; }
     const batch = {};
     for (let i = 0; i < localStorage.length; i++) {
       const lsKey = localStorage.key(i);
