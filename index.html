@@ -1490,10 +1490,13 @@
         e.stopPropagation();
         const isDay1 = !!item.closest('#dia5');
         const isDay2 = !!item.closest('#dia6');
+        const isDay3 = !!item.closest('#dia7');
         const liveLink = isDay1
           ? '\n\n📺 Síguenos en vivo: https://www.youtube.com/live/d_Fcen07Bm8?si=EFQcUL8ZSouu-GVi'
           : isDay2
           ? '\n\n🎥 Únete aquí: https://www.youtube.com/watch?v=hRRtaqJcr-I'
+          : isDay3
+          ? '\n\n🎥 Únete aquí: https://www.youtube.com/watch?v=6TiNRonk7ng'
           : '';
         const text = `🚨 ¡ATENCIÓN SINERGÉTICOS! 🚨\n\nEstamos por recibir a nuestro siguiente speaker del Bootcamp de Aceleración de Emprendimientos 2026:\n\n🎤 ${name}\n\n🔥 Prepárate para una sesión llena de valor, estrategias y aprendizajes que pueden ayudarte a acelerar tu crecimiento personal y empresarial.\n\n📝 Ten tu libreta lista, mantente presente y aprovecha cada enseñanza al máximo.\n\nLo que estás por escuchar podría convertirse en una de las ideas más importantes de todo este Bootcamp. 🚀🐝${liveLink}`;
         navigator.clipboard.writeText(text).then(() => {
